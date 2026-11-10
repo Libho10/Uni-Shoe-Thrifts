@@ -397,7 +397,7 @@ $email = $_SESSION["email"] ?? "";
       </div>
     </div>
   </div>
-  
+  <?php endif; ?>
       <div
           id="welcomeToast"
           class="toast align-items-center text-white bg-success border-0 position-fixed"
@@ -415,7 +415,7 @@ $email = $_SESSION["email"] ?? "";
               ></button>
           </div>
       </div>
-      <?php endif; ?>
+      
             
         </body>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
