@@ -113,3 +113,38 @@ $insertUser->close();
 $conn->close();
 
 sendJson(true, "Your account was created successfully.");
+
+//generates and stores a verification token
+$verificationToken = bin2hex(random_bytes(32));
+
+$verificationExpiresAt = date("Y-m-d H:i:s", strtotime("+24 hours"));
+
+$updateVerification = $conn->prepare(
+    "UPDATE users
+    SET
+        verification_token = ?,
+        verification_expires_at = ?
+    WHERE user_id = ?"
+);
+
+$updateVerification->bind_param(
+    "ssi",
+    $verificationToken,
+    $verificationExpiresAt,
+    $userId
+);
+
+$updateVerification->execute();
+$updateVerification->close();
+
+require_once "send_verification_email.php";
+
+$emailSent = sendVerificationEmail(
+    $email,
+    $firstName,
+    $verificationToken
+);
+sendJson(
+    true,
+    "Account created successfully. Please check your email to verify your account."
+);

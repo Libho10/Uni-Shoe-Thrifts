@@ -1,3 +1,29 @@
+/*console.log("Bootstrap object:", bootstrap);
+
+const accountModalElement = document.getElementById("accountModal");
+
+let myModal = null;
+
+if (accountModalElement) {
+    myModal = new bootstrap.Modal(accountModalElement);
+}
+
+const accountIcon = document.getElementById("openAccountLink");
+
+if (accountIcon && myModal) {
+    accountIcon.addEventListener("click", function () {
+        myModal.show();
+    });
+} */
+let myModal = null;
+const accountModalElement = document.getElementById("accountModal");
+
+if (accountModalElement) {
+    myModal = new bootstrap.Modal(accountModalElement);
+}
+if (myModal) {
+    myModal.hide();
+}
 
 const items = [
     "New sport shoes 50% off this summers school year",
