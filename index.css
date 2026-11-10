@@ -1,0 +1,212 @@
+
+li
+{
+display:inline-block;
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+font-weight:bold;  
+font-size:small;
+padding-left: 20px;
+padding-right: 20px;
+}
+
+
+.scroll-container {
+  flex-grow: 1;
+  overflow: hidden;
+  height: 50px; 
+
+}
+.text-row {
+  color: rgba(182, 251, 177);
+  white-space: nowrap;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  background-color: rgb(12, 12, 12);
+  align-items: center ;
+  justify-content: center;
+  padding-top: 5px;
+    
+}
+.infinite-scroll {
+  display: flex;
+  animation: scroll 25s linear infinite;
+}
+.text-scroll {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.text-item {
+  font-weight: 600;
+font-size: 0.9rem;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.star {
+  font-size: 0.9rem;
+  margin: 10px 30px;
+}
+
+
+
+
+
+.Logo{
+    height: 10px; 
+}
+
+#navbarSupportedcontent.collapse.navbar-collapse{
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;       
+  font-weight: 400;        
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.btn{
+  background-color: rgba(182, 251, 177, 1);
+  border-width: 3px;
+  color:black; 
+  width: 180px; 
+  border:none;
+}
+.btn:hover{
+  border-color: rgba(182, 251, 177, 1);
+   color:black; 
+}
+
+.statistics{
+   
+    padding: 20px;
+}
+.statistics-items{
+  display: flex;
+  justify-content: center;
+  gap: 50px; 
+  width:100%;
+ 
+ 
+   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.stat-num{
+ font-size: 25px; 
+}
+.stat-desc{
+  font-size:15px;
+  color: gray;
+}
+
+.btn.btn-shopnow{
+ border-color: none;
+}
+
+.main-image{
+  width: 100%;
+  background-color: aqua;
+}
+main-image[alt="main-image"]
+{
+  width: 100%;
+}
+
+
+.inner-cover{
+ /*border: 1px solid black; */
+ max-width: 1000px; 
+ text-align: center;
+ display: flex; 
+ /*flex-direction: column; */
+ align-items:center; 
+ justify-content: center;
+ margin: 0 auto; 
+ padding: 20px; 
+ padding-bottom: 0px;
+ margin-top: 00px; 
+}
+.cover-page{
+  padding-top: 60px;
+  margin-bottom: 0;
+}
+.cover-heading{
+
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+}
+.lead{
+   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+   font-weight: lighter;
+   color: rgb(179, 178, 178);
+}
+span.sc1{
+ color: rgba(167, 68, 130, 1)
+}
+.sc2{
+color: rgba(51, 101, 138, 1)
+}
+
+
+    .account-icons .bi {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-left: 2rem;
+      margin-right: 1rem;
+   
+    }
+    .bi-person{
+color: black; 
+    }
+
+    .main-image img{
+  object-fit: cover;
+  object-position: top;
+  width: 100%;
+  height: 250px;
+}
+.btn.btn-lash{
+background-color: rgba(235, 235, 235, 0.856);
+ border-width:3px;
+ border-color:rgb(0, 0, 0);
+ width: 50px;
+}
+.btn.btn-lash:hover{
+background-color:rgba(204, 204, 204, 0.175);
+}
+.btn-login{
+  border-width: 1px;
+  border-color: rgba(128, 137, 141, 0.192) ;
+  background-color: rgba(235, 235, 235, 0.856);
+}
+.btn-login:hover{
+  background-color: rgba(148, 208, 235, 0.233);
+  border-width: 1px;
+  border: none;
+}
+
+
+
+.btn.btn-signup {
+  border:0;
+  background-color: rgb(85, 178, 249); 
+}
+.btn.btn-signup:hover{
+  background-color: rgb(60, 121, 169);
+}
+

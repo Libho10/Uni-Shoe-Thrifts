@@ -1,0 +1,93 @@
+
+li
+{
+display:inline-block;
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+font-weight:bold;  
+font-size:small;
+padding-left: 20px;
+padding-right: 20px;
+}
+
+
+.scroll-container {
+  flex-grow: 1;
+  overflow: hidden;
+  height: 50px; 
+
+}
+.text-row {
+  color: rgba(182, 251, 177);
+  white-space: nowrap;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  background-color: rgb(12, 12, 12);
+  align-items: center ;
+  justify-content: center;
+  padding-top: 5px;
+    
+}
+.infinite-scroll {
+  display: flex;
+  animation: scroll 25s linear infinite;
+}
+.text-scroll {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.text-item {
+  font-weight: 600;
+font-size: 0.9rem;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.star {
+  font-size: 0.9rem;
+  margin: 10px 30px;
+}
+
+
+
+
+
+.Logo{
+    height: 10px; 
+}
+
+#navbarSupportedcontent.collapse.navbar-collapse{
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;       
+  font-weight: 400;        
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.btn{
+  background-color: rgba(182, 251, 177, 1);
+  border-width: 3px;
+  color:black; 
+  width: 180px; 
+  border:none;
+}
+.btn:hover{
+  border-color: rgba(182, 251, 177, 1);
+   color:black; 
+}

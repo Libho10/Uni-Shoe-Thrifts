@@ -1,0 +1,30 @@
+
+.Logo{
+    height: 10px; 
+}
+
+#navbarSupportedcontent.collapse.navbar-collapse{
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;       
+  font-weight: 400;        
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.btn{
+  background-color: rgba(182, 251, 177, 1);
+  border-width: 3px;
+  color:black; 
+  width: 180px; 
+  border:none;
+}
+.btn:hover{
+  border-color: rgba(182, 251, 177, 1);
+   color:black; 
+}

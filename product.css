@@ -1,0 +1,280 @@
+
+
+.Logo{
+    height: 10px; 
+}
+
+#navbarSupportedcontent.collapse.navbar-collapse{
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;       
+  font-weight: 400;        
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.btn{
+  background-color: rgba(182, 251, 177, 1);
+  border-width: 3px;
+  color:black; 
+  width: 180px; 
+  border:none;
+}
+.btn:hover{
+  border-color: rgba(182, 251, 177, 1);
+   color:black; 
+}
+
+
+    .search-bar-custom {
+      background: rgba(0, 0, 0, 0.308);
+      border-radius: 2rem;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 1.18rem;
+      padding-left: 1.5rem;
+       padding-top: 1rem;       /* adds top padding */
+  padding-bottom: 1rem; 
+    }
+    .search-bar-custom:focus {
+      border-color: #f6de4c;
+      outline: none;
+      background: none;
+    }
+    .search-icon-custom {
+      color: #f6de4c;
+      font-size: 1.2rem;
+      background: none;
+      border: none;
+      margin-left: -2.9rem;
+      z-index: 2;
+      position: relative;
+      top: 1px;
+    }
+    .icon-menu {
+      color: #f6de4c;
+      font-size: 2.1rem;
+    }
+    .account-icons .bi {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-left: 2rem;
+      margin-right: 1rem;
+   
+    }
+    .logo-img {
+      max-height: 80px;
+      margin-left: .5rem;
+    }
+  .form-control.search-bar-custom::placeholder {
+  color: rgba(255, 255, 255, 0.486);
+  font-size: 1rem;
+
+}
+.form-control.search-bar-custom {
+  color: rgba(255, 255, 255, 0.822);
+   font-size: 1rem;
+}
+
+
+
+li
+{
+display:inline-block;
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+font-weight:bold;  
+font-size:small;
+padding-left: 20px;
+padding-right: 20px;
+}
+
+
+.scroll-container {
+  flex-grow: 1;
+  overflow: hidden;
+  height: 50px; 
+
+}
+.text-row {
+  color: rgba(182, 251, 177);
+  white-space: nowrap;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  background-color: rgb(12, 12, 12);
+  align-items: center ;
+  justify-content: center;
+  padding-top: 5px;
+    
+}
+.infinite-scroll {
+  display: flex;
+  animation: scroll 25s linear infinite;
+}
+.text-scroll {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.text-item {
+  font-weight: 600;
+font-size: 0.9rem;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.star {
+  font-size: 0.9rem;
+  margin: 10px 30px;
+}
+
+
+
+
+
+.Logo{
+    height: 10px; 
+}
+
+#navbarSupportedcontent.collapse.navbar-collapse{
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;       
+  font-weight: 400;        
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.btn{
+  background-color: rgba(182, 251, 177, 1);
+  border-width: 3px;
+  color:black; 
+  width: 180px; 
+  border:none;
+}
+.btn:hover{
+  border-color: rgba(182, 251, 177, 1);
+   color:black; 
+}
+
+
+
+    .search-bar-custom {
+      background: rgba(0, 0, 0, 0.308);
+      border-radius: 2rem;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 1.18rem;
+      padding-left: 1.5rem;
+       padding-top: 1rem;       /* adds top padding */
+  padding-bottom: 1rem; 
+    }
+    .search-bar-custom:focus {
+      border-color: #f6de4c;
+      outline: none;
+      background: none;
+    }
+    .search-icon-custom {
+      color: #f6de4c;
+      font-size: 1.2rem;
+      background: none;
+      border: none;
+      margin-left: -2.9rem;
+      z-index: 2;
+      position: relative;
+      top: 1px;
+    }
+    .icon-menu {
+      color: #f6de4c;
+      font-size: 2.1rem;
+    }
+    .account-icons .bi {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-left: 2rem;
+      margin-right: 1rem;
+   
+    }
+    .logo-img {
+      max-height: 80px;
+      margin-left: .5rem;
+    }
+  .form-control.search-bar-custom::placeholder {
+  color: rgba(255, 255, 255, 0.486);
+  font-size: 1rem;
+
+}
+.form-control.search-bar-custom {
+  color: rgba(255, 255, 255, 0.822);
+   font-size: 1rem;
+}
+
+.size-btn.active {
+  background: rgb(122, 197, 255) !important;
+  color: black;
+
+}
+/* Hide number input spinners in Chrome/Safari/Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.nav-tabs .nav-item {
+  margin-right: 25rem;
+}
+.nav-tabs .nav-item:last-child {
+  margin-right: 0rem;
+}
+
+.nav-tabs .nav-link.active {
+  color: #998204 !important;
+  border-bottom: 2.5px solid #998204 !important; /* Optional: colored underline */
+  font-weight: 600;
+}
+
+.product-thumbnail {
+    width: 100%;
+    max-width: 110px;
+    height: 110px;
+    object-fit:contain;
+    cursor: pointer;
+    border: 2px solid #d4d4d2;
+    border-radius: 10px;
+    transition: border-color 0.2s ease;
+}
+
+.product-thumbnail:hover {
+    border-color:  #ababab;
+}
+
+.product-thumbnail.active {
+    border-color:  #ababab;
+}
+
