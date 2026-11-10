@@ -1,23 +1,26 @@
-
-<?php
-$showWelcome = false;
-$welcomeMessage = "";
-
-if (!empty($_SESSION["welcome_message"])) {
-    $showWelcome = true;
-    $welcomeMessage = $_SESSION["welcome_message"];
-    unset($_SESSION["welcome_message"]);
-}
-?>
 <?php
 session_start();
+
+$showWelcome = false;
+$welcomeMessage = "";
 
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 
 $firstName = $_SESSION["first_name"] ?? "";
 $lastName = $_SESSION["last_name"] ?? "";
 $email = $_SESSION["email"] ?? "";
+
+if (!empty($_SESSION["welcome_message"])) {
+    $showWelcome = true;
+    $welcomeMessage = $_SESSION["welcome_message"];
+    unset($_SESSION["welcome_message"]);
+}
+
+$cartItemCount = 0;
+
 ?>
+
+  
 
 <!DOCTYPE html>
 <html lang = en>
@@ -111,9 +114,16 @@ $email = $_SESSION["email"] ?? "";
                            
 
                             <ul class="nav justify-content-end">
-                                <li class="nav-item">
-                                    <a class="navbar-brand" href="../UTH-website/checkout-page/review-page.html">
-                                    <img src="cart.svg" alt="Logo" width="20" height="20">
+                                  <li class="nav-item position-relative">
+                                    <a class="navbar-brand" href="cart.php">
+                                    <img src="cart.svg" alt="Cart" width="20" height="20">
+                                    <span
+                                      id="cartBadge"
+                                      class="position-absolute translate-middle badge rounded-pill bg-danger"
+                                      style="top:10px; left:100%; <?= $cartItemCount > 0 ? "" : "display:none;" ?>"
+                                  >
+                                      <?= $cartItemCount ?>
+                                  </span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -121,15 +131,27 @@ $email = $_SESSION["email"] ?? "";
                                     <img src="heart.svg" alt="Logo" width="20" height="20">
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                      <a href="#" id="openAccountLink" data-bs-toggle="modal" data-bs-target="#accountModal">
-                                <i class="bi bi-person" style="font-size:1.6rem;"></i>
-                
-                                </a>
 
-                
-                                
-                                </li>
+                               <li class="nav-item">
+                                  <?php if (!$isLoggedIn): ?>
+                                      <a
+                                          href="#"
+                                          id="openAccountLink"
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#accountModal"
+                                      >
+                                          <i class="bi bi-person" style="font-size:1.6rem;"></i>
+                                      </a>
+                                  <?php else: ?>
+                                      <a
+                                          href="account.php"
+                                          id="openAccountLink"
+                                      >
+                                          <i class="bi bi-person" style="font-size:1.6rem;"></i>
+                                      </a>
+                                  <?php endif; ?>
+                              </li>
+
                                 <li class="nav-item">
                                    <button class="btn btn-outline-success btn-contact-us" type="submit">Contact Us</button>
                                 </li>
@@ -296,64 +318,64 @@ $email = $_SESSION["email"] ?? "";
 
 
 
-          
-  
-<?php if(!$isLoggedIn): ?>
-<div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+ <?php if (!$isLoggedIn): ?> 
+ <div class="modal fade" id="accountModal" tabindex="-1"         
+    aria-labelledby="accountModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+
     <div class="modal-content px-2 py-2">
       <div class="modal-body">
         <div class="row">
 
-<!-- Left: Log In -->
-<div class="col-md-6 p-4">
-    <h5 class="mb-2" style="font-weight: 500;">Already Signed up?</h5>
-    <p class="mb-4" style="font-size: 1rem;">Log in below or use a provider:</p>
+          <!-- Left: Log In -->
+          <div class="col-md-6 p-4">
+              <h5 class="mb-2" style="font-weight: 500;">Already Signed up?</h5>
+              <p class="mb-4" style="font-size: 1rem;">Log in below or use a provider:</p>
 
-    <form id="loginForm" method="POST" action="login.php">
+              <form id="loginForm" method="POST" action="login.php">
 
-        <input
-            type="email"
-            class="form-control mb-2"
-            name="email"
-            id="loginEmail"
-            placeholder="Email"
-            required
-        >
+                  <input
+                      type="email"
+                      class="form-control mb-2"
+                      name="email"
+                      id="loginEmail"
+                      placeholder="Email"
+                      required
+                  >
 
-        <div class="input-group mb-2">
-            <input
-                type="password"
-                class="form-control"
-                name="password"
-                id="loginPassword"
-                placeholder="Password"
-                required
-            >
-            <button
-                class="btn btn-outline-secondary btn-lash"
-                type="button"
-                id="togglePassword"
-            >
-                <i class="bi bi-eye-slash"></i>
-            </button>
-        </div>
+                  <div class="input-group mb-2">
+                      <input
+                          type="password"
+                          class="form-control"
+                          name="password"
+                          id="loginPassword"
+                          placeholder="Password"
+                          required
+                      >
+                      <button
+                          class="btn btn-outline-secondary btn-lash"
+                          type="button"
+                          id="togglePassword"
+                      >
+                          <i class="bi bi-eye-slash"></i>
+                      </button>
+                  </div>
 
-        <button
-            class="btn btn-light w-100 mb-3 btn-login"
-            type="submit"
-        >
-            Log In
-        </button>
+                  <button
+                      class="btn btn-light w-100 mb-3 btn-login"
+                      type="submit"
+                  >
+                      Log In
+                  </button>
 
-        <div id="googleLoginBtn" class="mb-2"></div>
+                  <div id="googleLoginBtn" class="mb-2"></div>
 
-    </form>
-</div>
-          
+              </form>
+          </div>
+                    
 
           <!-- Right: Sign Up -->
-          <div class="col-md-6 p-4 border-start">
+         <div class="col-md-6 p-4 border-start">
             <h5 class="mb-2" style="font-weight: 500;">Sign Up for Account</h5>
             <p style="font-size:1rem;">Let's get you all set up so you can start shopping without hassle.</p>
 
@@ -396,8 +418,14 @@ $email = $_SESSION["email"] ?? "";
         </div>
       </div>
     </div>
-  </div>
-  <?php endif; ?>
+   </div>
+    
+ </div>
+
+ <?php endif; ?>
+
+
+
       <div
           id="welcomeToast"
           class="toast align-items-center text-white bg-success border-0 position-fixed"
@@ -428,5 +456,3 @@ $email = $_SESSION["email"] ?? "";
           </script>
           <?php endif; ?>
 </html>
-
-

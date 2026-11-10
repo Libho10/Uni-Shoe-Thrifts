@@ -68,7 +68,10 @@ if (isset($_SESSION["cart_id"])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css"> 
      <link rel="stylesheet" href="cart.css"> 
+     
+
 
     <style>
         body {
@@ -390,7 +393,52 @@ if (isset($_SESSION["cart_id"])) {
 
 </div>
 
+<footer class="bg-black text-white pt-5 pb-4">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <h4 class="mb-3" style="font-weight:700;  font-family: 'Unbounded', sans-serif; ">Uni-Shoe Thrifts</h4>
+        <p style="color:#b0b0b0; font-size:1rem;">
+          Organic products | Online & Retail | South Africa
+        </p>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <h5 class="mb-3" style="font-weight:600;">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50 text-decoration-none">Home</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Shop</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">About</a></li>
+          <li><a href="#" class="text-white-50 text-decoration-none">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-end text-center">
+        <h5 class="mb-3" style="font-weight:600;">Follow Us</h5>
+        <a href="#" class="text-white fs-4 me-3">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="#" class="text-white fs-4 me-3">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="#" class="text-white fs-4 me-3">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="#" class="text-white fs-4 me-3">
+          <i class="bi bi-tiktok"></i>
+        </a>
+      </div>
+    </div>
+    <hr style="border-color:rgba(255,255,255,0.15);" />
+    <div class="row">
+      <div class="col text-center" style="font-size:0.95rem;color:#888;">
+        &copy; 2026 Uni-Shoe Thrifts. All rights reserved.
+      </div>
+    </div>
+  </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="cart.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="index.js"></script>
 </body>
 </html>

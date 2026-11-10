@@ -1,50 +1,45 @@
-console.log("Bootstrap object:", bootstrap);
-var myModal = new bootstrap.Modal(document.getElementById("accountModal"));
 
 const items = [
-  "New sport shoes 50% off this summers school year",
-  "New buyers get up to 20% off first purchase",
-  "Bundle purchases this, premium quality",
-  "Santisation quality control certifcations below",
-   "More amazing stuff coming soon!!",
-   "Cannot wait to see you all there!"
+    "New sport shoes 50% off this summers school year",
+    "New buyers get up to 20% off first purchase",
+    "Bundle purchases this, premium quality",
+    "Santisation quality control certifcations below",
+    "More amazing stuff coming soon!!",
+    "Cannot wait to see you all there!"
 ];
 
 const horizontalTextScroll = document.querySelectorAll(".text-scroll");
 
 function initializeItems() {
-  horizontalTextScroll.forEach((scrollItem) => {
-    scrollItem.innerHTML = "";
-  });
+    horizontalTextScroll.forEach(function (scrollItem) {
+        scrollItem.innerHTML = "";
+    });
+}
+
+function addItemToScrolls(text) {
+    horizontalTextScroll.forEach(function (scrollItem) {
+        const textItem = document.createElement("span");
+        textItem.classList.add("text-item");
+        textItem.innerHTML = text;
+        scrollItem.appendChild(textItem);
+
+        const star = createStar();
+        star.classList.add("star");
+        scrollItem.appendChild(star);
+    });
+}
+
+function createStar() {
+    const star = document.createElement("span");
+    star.textContent = "★";
+    return star;
 }
 
 initializeItems();
 
-items.forEach((item) => {
-  addItemToScrolls(item);
+items.forEach(function (item) {
+    addItemToScrolls(item);
 });
-
-function addItemToScrolls(text) {
- 
-  horizontalTextScroll.forEach((scrollItem) => {
-    const textItem = document.createElement("span");
-    textItem.classList.add("text-item");
-    textItem.innerHTML = text;
-    scrollItem.appendChild(textItem);
-
-    const star = createStar();
-    star.classList.add("star");
-    scrollItem.appendChild(star);
-  });
-}
-
-function createStar() {
-  const star = document.createElement("span");
-  star.textContent = "★";
-  return star;
-} 
-
-
 
 
 // Existing password toggle
