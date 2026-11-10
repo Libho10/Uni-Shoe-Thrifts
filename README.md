@@ -1,2 +1,2 @@
 # Uni-Shoe-Thrifts
-E-Commerce Website
+E-Commerce Website.
