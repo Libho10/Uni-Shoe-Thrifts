@@ -13,16 +13,19 @@ function sendVerificationEmail($recipientEmail, $recipientName, $verificationTok
 
     $mail = new PHPMailer(true);
 
+    $mail->SMTPDebug = 2;
+    $mail->Debugoutput = 'error_log'; 
+
     try {
         $mail->isSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;
-        $mail->Username = "yourgmailaddress@gmail.com";
-        $mail->Password = "YOUR_16_CHARACTER_APP_PASSWORD";
+        $mail->Username = "wat3rmlon@gmail.com";
+        $mail->Password = "fulj gada jmxy";
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom("yourgmailaddress@gmail.com", "UTH Website");
+        $mail->setFrom("wat3rmlon@gmail.com", "UTH Website");
         $mail->addAddress($recipientEmail, $recipientName);
 
         $mail->isHTML(true);

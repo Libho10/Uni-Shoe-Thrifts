@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 header("Content-Type: application/json; charset=UTF-8");
 
 require_once "connect.php";
@@ -20,6 +22,7 @@ $firstName = trim($_POST["first_name"] ?? "");
 $lastName = trim($_POST["last_name"] ?? "");
 $email = trim($_POST["email"] ?? "");
 $password = trim($_POST["password"] ?? "");
+
 $termsAccepted = isset($_POST["terms_accepted"]) && $_POST["terms_accepted"] === "1";
 
 if ($firstName === "" || $lastName === "" || $email === "" || $password === "") {
@@ -39,7 +42,9 @@ if (!$termsAccepted) {
 }
 
 $checkEmail = $conn->prepare(
-    "SELECT user_id FROM users WHERE email = ?"
+    "SELECT user_id
+    FROM users
+    WHERE email = ?"
 );
 
 if (!$checkEmail) {
@@ -62,12 +67,22 @@ $termsAcceptedValue = 1;
 $status = "active";
 
 $insertUser = $conn->prepare(
-    "INSERT INTO users
-    (first_name, last_name, email, password_hash, terms_accepted, status)
-    VALUES (?, ?, ?, ?, ?, ?)"
+    "INSERT INTO users (
+        first_name,
+        last_name,
+        email,
+        password_hash,
+        terms_accepted,
+        status,
+        created_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, NOW())"
 );
 
 if (!$insertUser) {
+    $checkEmail->close();
+    $conn->close();
+
     sendJson(false, "Could not prepare the user insert query.");
 }
 
@@ -88,35 +103,41 @@ if (!$insertUser->execute()) {
     $insertUser->close();
     $conn->close();
 
-    sendJson(false, "Database insert failed: " . $insertError);
+    sendJson(false, "Database insert failed. Please try again.");
 }
 
 $newUserId = $conn->insert_id;
 
+$insertUser->close();
+
 $termsVersion = "v1.0";
 
 $insertConsent = $conn->prepare(
-    "INSERT INTO UserConsent
-    (user_id, terms_version)
+    "INSERT INTO UserConsent (
+        user_id,
+        terms_version
+    )
     VALUES (?, ?)"
 );
 
-$insertConsent->bind_param("is", $newUserId, $termsVersion);
-$insertConsent->execute();
-
-$insertConsent->close();
+if ($insertConsent) {
+    $insertConsent->bind_param("is", $newUserId, $termsVersion);
+    $insertConsent->execute();
+    $insertConsent->close();
+}
 
 logAudit($conn, $newUserId, "USER_SIGNUP");
 
-$checkEmail->close();
-$insertUser->close();
-$conn->close();
+// Automatically log the user in after successful signup
+$_SESSION["logged_in"] = true;
+$_SESSION["user_id"] = $newUserId;
+$_SESSION["email"] = $email;
+$_SESSION["first_name"] = $firstName;
+$_SESSION["last_name"] = $lastName;
 
-sendJson(true, "Your account was created successfully.");
 
-//generates and stores a verification token
+// Create verification token
 $verificationToken = bin2hex(random_bytes(32));
-
 $verificationExpiresAt = date("Y-m-d H:i:s", strtotime("+24 hours"));
 
 $updateVerification = $conn->prepare(
@@ -131,7 +152,7 @@ $updateVerification->bind_param(
     "ssi",
     $verificationToken,
     $verificationExpiresAt,
-    $userId
+    $newUserId
 );
 
 $updateVerification->execute();
@@ -144,7 +165,8 @@ $emailSent = sendVerificationEmail(
     $firstName,
     $verificationToken
 );
-sendJson(
-    true,
-    "Account created successfully. Please check your email to verify your account."
-);
+
+$checkEmail->close();
+$conn->close();
+
+sendJson(true, "Your account was created successfully.");

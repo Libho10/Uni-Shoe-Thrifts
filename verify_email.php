@@ -16,6 +16,10 @@ $verifyUser = $conn->prepare(
     LIMIT 1"
 );
 
+if (!$verifyUser) {
+    die("Could not prepare the verification query.");
+}
+
 $verifyUser->bind_param("s", $token);
 $verifyUser->execute();
 

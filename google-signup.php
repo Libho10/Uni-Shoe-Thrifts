@@ -1,10 +1,8 @@
 <?php
+session_start();
 header("Content-Type: application/json; charset=UTF-8");
 
 require_once "connect.php";
-
-require_once "vendor/autoload.php";
-
 require_once "log_audit.php";
 
 function sendJson($success, $message) {
@@ -15,104 +13,180 @@ function sendJson($success, $message) {
     exit();
 }
 
+function debugError($message) {
+    error_log($message);
+    sendJson(false, "Google sign-up failed. Please try again.");
+}
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     sendJson(false, "Only POST requests are allowed.");
 }
 
-$input = json_decode(file_get_contents("php://input"), true);
+$input = file_get_contents("php://input");
+$data = json_decode($input, true);
 
-$idToken = $input["id_token"] ?? "";
-
-if ($idToken === "") {
-    sendJson(false, "Google sign-up token is missing.");
+if (!$data || empty($data["credential"])) {
+    debugError("Google credential missing.");
 }
 
-$client = new Google_Client([
-    "client_id" => "694501172256-5lgva3adqcs6df3ho75907qim3ibi4vu.apps.googleusercontent.com"
-]);
+$credential = $data["credential"];
 
-$payload = $client->verifyIdToken($idToken);
+// Decode the Google JWT token
+$tokenParts = explode(".", $credential);
+
+if (count($tokenParts) !== 3) {
+    debugError("Invalid Google credential format.");
+}
+
+$payload = json_decode(base64_decode(str_replace("-", "+", str_replace("_", "/", $tokenParts[1]))), true);
 
 if (!$payload) {
-    sendJson(false, "Invalid Google sign-up token.");
+    debugError("Could not decode Google token.");
 }
 
-$googleId = $payload["sub"];
-$email = $payload["email"] ?? "";
+$googleEmail = $payload["email"] ?? "";
 $firstName = $payload["given_name"] ?? "";
 $lastName = $payload["family_name"] ?? "";
-$emailVerified = $payload["email_verified"] ?? false;
+$googleId = $payload["sub"] ?? "";
 
-if ($email === "" || !$emailVerified) {
-    sendJson(false, "Google did not provide a verified email address.");
+if ($googleEmail === "") {
+    debugError("Google email address is missing.");
 }
 
-$checkEmail = $conn->prepare(
-    "SELECT user_id FROM users WHERE email = ?"
+// Check whether the user already exists
+$checkUser = $conn->prepare(
+    "SELECT user_id, first_name, last_name, email
+    FROM users
+    WHERE email = ?
+    LIMIT 1"
 );
 
-$checkEmail->bind_param("s", $email);
-$checkEmail->execute();
-$checkEmail->store_result();
+if (!$checkUser) {
+    debugError("Could not prepare user check query.");
+}
 
-if ($checkEmail->num_rows > 0) {
-    $checkEmail->close();
+$checkUser->bind_param("s", $googleEmail);
+$checkUser->execute();
+
+$userId = null;
+$existingFirstName = null;
+$existingLastName = null;
+$emailFromDatabase = null;
+
+$checkUser->bind_result(
+    $userId,
+    $existingFirstName,
+    $existingLastName,
+    $emailFromDatabase
+);
+
+$checkUser->fetch();
+$checkUser->close();
+
+// If the user already exists, log them in
+if ($userId !== null) {
+
+    $_SESSION["logged_in"] = true;
+    $_SESSION["user_id"] = $userId;
+    $_SESSION["email"] = $emailFromDatabase;
+    $_SESSION["first_name"] = $existingFirstName;
+    $_SESSION["last_name"] = $existingLastName;
+
+    logAudit($conn, $userId, "USER_LOGIN_SUCCESS");
     $conn->close();
 
-    sendJson(false, "An account with this Google email already exists. Please log in instead.");
+    sendJson(true, "Welcome back, " . $existingFirstName . "!");
 }
 
+// Create a new Google user
 $status = "active";
 $termsAccepted = 1;
-
-// Google users do not use a password.
-// Store an unusable random value in password_hash.
-$passwordHash = password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
+$passwordHash = password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT);
 
 $insertUser = $conn->prepare(
-    "INSERT INTO users
-    (first_name, last_name, email, password_hash, terms_accepted, status)
-    VALUES (?, ?, ?, ?, ?, ?)"
+    "INSERT INTO users (
+        first_name,
+        last_name,
+        email,
+        password_hash,
+        terms_accepted,
+        status,
+        created_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, NOW())"
 );
+
+if (!$insertUser) {
+    debugError("Could not prepare Google user insert query.");
+}
 
 $insertUser->bind_param(
     "ssssis",
     $firstName,
     $lastName,
-    $email,
+    $googleEmail,
     $passwordHash,
     $termsAccepted,
     $status
 );
 
-if (!$insertUser->execute()) {
-    $insertError = $insertUser->error;
+$insertUser->execute();
 
-    $checkEmail->close();
-    $insertUser->close();
-    $conn->close();
+$userId = $conn->insert_id;
+$insertUser->close();
 
-    sendJson(false, "Could not create your Google account: " . $insertError);
-}
-$newUserId = $conn->insert_id;
+// Creating the email verification token
+$verificationToken = bin2hex(random_bytes(32));
+$verificationExpiresAt = date("Y-m-d H:i:s", strtotime("+24 hours"));
 
-$termsVersion = "v1.0";
-
-$insertConsent = $conn->prepare(
-    "INSERT INTO UserConsent
-    (user_id, terms_version)
-    VALUES (?, ?)"
+$updateVerification = $conn->prepare(
+    "UPDATE users
+    SET
+        verification_token = ?,
+        verification_expires_at = ?
+    WHERE user_id = ?"
 );
 
-$insertConsent->bind_param("is", $newUserId, $termsVersion);
-$insertConsent->execute();
+if (!$updateVerification) {
+    debugError("Could not prepare Google verification update query.");
+}
 
-$insertConsent->close();
+$updateVerification->bind_param(
+    "ssi",
+    $verificationToken,
+    $verificationExpiresAt,
+    $userId
+);
 
-logAudit($conn, $newUserId, "GOOGLE_SIGNUP");
+$updateVerification->execute();
+$updateVerification->close();
 
-$checkEmail->close();
-$insertUser->close();
+// Send the verification email
+require_once "send_verification_email.php";
+
+$emailSent = sendVerificationEmail(
+    $googleEmail,
+    $firstName,
+    $verificationToken
+);
+
+// Automatically log the user in after Google signup
+$_SESSION["logged_in"] = true;
+$_SESSION["user_id"] = $userId;
+$_SESSION["email"] = $googleEmail;
+$_SESSION["first_name"] = $firstName;
+$_SESSION["last_name"] = $lastName;
+
+logAudit($conn, $userId, "USER_SIGNUP");
 $conn->close();
 
-sendJson(true, "Your Google account was created successfully.");
+if ($emailSent) {
+    sendJson(
+        true,
+        "Welcome to UTH Website, " . $firstName . "! Please check your email to verify your account."
+    );
+}
+sendJson(
+    true,
+    "Welcome to UTH Website, " . $firstName . "! The verification email could not be sent."
+);

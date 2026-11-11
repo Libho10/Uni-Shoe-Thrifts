@@ -1,20 +1,4 @@
-/*console.log("Bootstrap object:", bootstrap);
 
-const accountModalElement = document.getElementById("accountModal");
-
-let myModal = null;
-
-if (accountModalElement) {
-    myModal = new bootstrap.Modal(accountModalElement);
-}
-
-const accountIcon = document.getElementById("openAccountLink");
-
-if (accountIcon && myModal) {
-    accountIcon.addEventListener("click", function () {
-        myModal.show();
-    });
-} */
 let myModal = null;
 const accountModalElement = document.getElementById("accountModal");
 
@@ -138,10 +122,20 @@ document.getElementById("signupForm").addEventListener("submit", async function 
 
         const data = await response.json();
 
-        if (!response.ok || !data.success) {
-            alert(data.message || "Sign-up failed.");
-            return;
-        }
+        if (data.success) 
+            {
+             alert(data.message);
+                if (myModal) {
+                myModal.hide();
+                    }
+                 window.location.href = "index.php";
+                 return; 
+            }
+
+        
+         alert(data.message || "Sign-up failed.");
+           
+    
 
         form.reset();
         myModal.hide(); 
@@ -202,7 +196,7 @@ window.addEventListener("load", function () {
 });
 
 // One callback for both Google buttons
-function handleGoogleResponse(response) {
+/*function handleGoogleResponse(response) {
     const idToken = response.credential;
 
     let endpoint = "";
@@ -249,6 +243,43 @@ function handleGoogleResponse(response) {
         console.error("Google error:", error);
         alert("Google error: " + error.message);
     });
+} */
+
+function handleGoogleResponse(response) {
+
+    console.log("Google token received.");
+    console.log("Sending Google token to: google-signup.php");
+
+    fetch("google-signup.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            credential: response.credential
+        })
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+
+            if (data.success) {
+
+                if (myModal) {
+                    myModal.hide();
+                }
+
+                window.location.href = "index.php";
+
+            } else {
+                alert(data.message || "Google sign-up failed.");
+            }
+        })
+        .catch(function (error) {
+            console.error("Google error:", error);
+            alert("Google sign-up failed. Please try again.");
+        });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
